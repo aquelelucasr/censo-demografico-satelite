@@ -1,1 +1,0 @@
-Manages the physical storage and data persistence using SQLite (`density.db`). It is responsible for opening thread-safe connections for the FastAPI server, executing SQL queries safely to prevent SQL injection, and returning raw data. It is exclusively accessed by the Controller.
