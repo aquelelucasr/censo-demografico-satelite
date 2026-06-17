@@ -10,22 +10,25 @@ def setup_db():
         CREATE TABLE IF NOT EXISTS search_history (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             slug TEXT NOT NULL,
-            lat REAL NOT NULL,
-            lon REAL NOT NULL
+            lat_tl REAL NOT NULL,
+            lon_tl REAL NOT NULL,
+            lat_br REAL NOT NULL,
+            lon_br REAL NOT NULL
         )
     ''')
     conn.commit()
     conn.close()
 
 ### create
-def save_search(slug: str, lat: float, lon: float) -> None:
-    """Recebe o slug, lat e lon e faz a inserção no banco."""
+def save_search(slug: str, lat_tl: float, lon_tl: float, lat_br: float, lon_br: float) -> None:
+    """Recebe o slug e os 4 pontos da bounding box e faz a inserção no banco."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     
     cursor.execute(
-        "INSERT INTO search_history (slug, lat, lon) VALUES (?, ?, ?)",
-        (slug, lat, lon)
+        """INSERT INTO search_history (slug, lat_tl, lon_tl, lat_br, lon_br) 
+           VALUES (?, ?, ?, ?, ?)""",
+        (slug, lat_tl, lon_tl, lat_br, lon_br)
     )
     
     conn.commit()
