@@ -1,1 +1,2 @@
-The orchestrator of the system. It receives API requests from the View, interacts with the Database to save/retrieve search history, and will coordinate the Machine Learning and Computer Vision pipelines to estimate demographic density from satellite images.
+backend api that requests images from google and filters them through the machine learning algorythm to calculate how many houses are in a given area, saving this data along with the coordinates of the request for future reference
+
