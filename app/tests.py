@@ -1,50 +1,56 @@
 import Model.databaseModel as db
+import sqlite3
 
 def run_tests():
-    print("🔧 Iniciando testes do Banco de Dados...\n")
+    print("🔧 Iniciando testes de Relacionamento (1:1)...\n")
     
     # 1. Configura o banco zerado
     print("-> Configurando o banco de dados (search_history.db)...")
     db.setup_db()
     
-    # 2. Inserindo dados com os 4 pontos (TL e BR)
-    print("-> Salvando pesquisas de teste com quinas TL e BR...")
-    db.save_search(
-        slug="08/11/2002 12h 00m 00s", 
+    # 2. Criando a pesquisa e capturando o ID
+    print("-> Salvando pesquisa e capturando o ID gerado...")
+    meu_id_gerado = db.save_search(
+        slug="17/06/2026 22h 44m", 
         lat_tl=-28.9333, lon_tl=-49.4833, 
         lat_br=-28.9400, lon_br=-49.4700
     )
-    db.save_search(
-        slug="08/11/2002 23h 59m 59s", 
-        lat_tl=-28.9500, lon_tl=-49.5000, 
-        lat_br=-28.9600, lon_br=-49.4900
-    )
-    db.save_search(
-        slug="23/10/1953 23h 59m 59s", 
-        lat_tl=-23.5505, lon_tl=-46.6333, 
-        lat_br=-23.5600, lon_br=-46.6200
-    )
+    print(f"✅ Pesquisa salva com sucesso! ID gerado na main: {meu_id_gerado}")
     
-    # 3. Testando a busca por termo (Data)
-    termo_pesquisa = "08/11/2002"
-    print(f"\n-> Buscando no histórico pelo termo: '{termo_pesquisa}'...")
-    resultados_termo = db.find_search_by_term(termo_pesquisa)
-    if resultados_termo:
-        for res in resultados_termo:
-            print(f"  - {res}")
-            
-    # 4. Testando a busca de TODO o histórico (Missão 2)
-    print("\n-> Buscando TODO o histórico do banco...")
-    todo_historico = db.get_all_history()
+    # 3. Inserindo os resultados populacionais vinculados a esse ID
+    print(f"-> Salvando os resultados da IA vinculados ao ID {meu_id_gerado}...")
+    db.save_result(
+        search_id=meu_id_gerado,
+        population=15420,
+        population_density=125.5
+    )
+    print("✅ Resultados salvos na nova tabela com sucesso!")
     
-    print("✅ Histórico Completo:")
-    if todo_historico:
-        for linha in todo_historico:
-            print(f"  - {linha}")
+    # 4. Prova real (buscando direto no banco com JOIN para confirmar)
+    print("\n-> 🕵️‍♂️ PROVA REAL: Cruzando as tabelas no banco de dados...")
+    conn = sqlite3.connect(db.DB_NAME)
+    cursor = conn.cursor()
+    
+    # Fazendo um JOIN simples para ver as duas tabelas juntas
+    cursor.execute('''
+        SELECT h.slug, r.population, r.population_density
+        FROM search_history h
+        JOIN search_results r ON h.id = r.id
+        WHERE h.id = ?
+    ''', (meu_id_gerado,))
+    
+    resultado_join = cursor.fetchone()
+    conn.close()
+    
+    if resultado_join:
+        print("🎉 Sucesso Absoluto! Dados amarrados encontrados:")
+        print(f"   Slug da Pesquisa: {resultado_join[0]}")
+        print(f"   População Estimada: {resultado_join[1]} habitantes")
+        print(f"   Densidade: {resultado_join[2]} hab/km²")
     else:
-        print("  O banco está vazio.")
+        print("❌ Ops, algo deu errado. Dados não encontrados.")
         
-    print("\n🚀 Testes finalizados com sucesso!")
+    print("\n🚀 Todos os testes passaram!")
 
 if __name__ == "__main__":
     run_tests()

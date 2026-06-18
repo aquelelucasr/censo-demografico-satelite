@@ -3,9 +3,13 @@ import sqlite3
 DB_NAME = "search_history.db"
 
 def setup_db():
-    """Cria a tabela de histórico se ela ainda não existir."""
+    """Cria as tabelas de histórico e resultados se elas ainda não existirem."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
+    
+    cursor.execute("PRAGMA foreign_keys = ON;")
+    
+    # tabela de historico de pesquisas
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS search_history (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,12 +20,23 @@ def setup_db():
             lon_br REAL NOT NULL
         )
     ''')
+    
+    # tabela com os dados de cada pesquisa, 1:1 com search_history
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS search_results (
+            id INTEGER PRIMARY KEY,
+            population INTEGER NOT NULL,
+            population_density REAL NOT NULL,
+            FOREIGN KEY (id) REFERENCES search_history (id) ON DELETE CASCADE
+        )
+    ''')
+    
     conn.commit()
-    conn.close()
+    conn.close() 
 
-### create
-def save_search(slug: str, lat_tl: float, lon_tl: float, lat_br: float, lon_br: float) -> None:
-    """Recebe o slug e os 4 pontos da bounding box e faz a inserção no banco."""
+### create da search_history
+def save_search(slug: str, lat_tl: float, lon_tl: float, lat_br: float, lon_br: float) -> int:
+    """Recebe o slug e os 4 pontos, faz a inserção e RETORNA o ID gerado."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     
@@ -31,10 +46,33 @@ def save_search(slug: str, lat_tl: float, lon_tl: float, lat_br: float, lon_br: 
         (slug, lat_tl, lon_tl, lat_br, lon_br)
     )
     
+    # Captura o ID que o SQLite acabou de criar automaticamente
+    inserted_id = cursor.lastrowid 
+    
+    conn.commit()
+    conn.close()
+    
+    return inserted_id
+
+### create da search_results
+def save_result(search_id: int, population: int, population_density: float) -> None:
+    """Salva os resultados vinculados ao ID da pesquisa original."""
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    
+    # Ativa as chaves estrangeiras para garantir a integridade da relação 1:1
+    cursor.execute("PRAGMA foreign_keys = ON;")
+    
+    cursor.execute(
+        """INSERT INTO search_results (id, population, population_density) 
+           VALUES (?, ?, ?)""",
+        (search_id, population, population_density)
+    )
+    
     conn.commit()
     conn.close()
 
-### read
+### reads da search_history
 def find_search_by_term(term: str) -> list:
     """Busca no banco todas as slugs que contêm o termo digitado."""
     conn = sqlite3.connect(DB_NAME)

@@ -1,14 +1,15 @@
-Responsible for keeping track of previous requests done to the system
+## Responsible for keeping track of previous requests done to the system
 
 
-## TODOS:
-- [ ] Implement all tables and respective cr~~u~~ds
-  - [x] Requests
+### TODO:
+
+- [ ] Implement all tables and respective CRUDs
+  - [ ] Implement `search_history` table
+    - [x] create (`save_search()`)
+    - [x] read (both `find_search_by_term()` and `get_all_history()`)
+    - [ ] delete
+  - [ ] Implement `search_results` table
     - [x] create
-    - [x] read
-    - [x] delete
-  - [ ] RequestData
-    - [ ] create
     - [ ] read
     - [ ] update
     - [ ] ~~delete~~ RequestData should only be deleted when the associated request is deleted, so implement this in RequestData's delete function!
@@ -21,17 +22,17 @@ Tablename:
 Fields:
 - id INTEGER PRIMARY KEY AUTOINCREMENT,
 - slug   STRING
-- lat_tl FLOAT
-- lon_tl FLOAT
-- lat_br FLOAT
-- lon_br FLOAT
+- lat_tl REAL
+- lon_tl REAL
+- lat_br REAL
+- lon_br REAL
 
 Tablename:
 - request_data
 Fields:
 - id INTEGER PK FK // if you can you have a primary key be a foreign key otherwise split these up!
 - population    INTEGER
-- pop_density   FLOAT
+- pop_density   REAL
 ... TODO: ADD ANYTHING ELSE REQUIRED!
 ```
 
