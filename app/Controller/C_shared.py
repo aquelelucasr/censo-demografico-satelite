@@ -1,3 +1,5 @@
 GOOGLE_API_KEY = ""
 ROBOFLOW_API_KEY = ""
+IMAGE_SIZE = 512
+FILEPATH = "./media/"
 DEBUG = True
