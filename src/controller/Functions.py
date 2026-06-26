@@ -10,16 +10,16 @@ import json
 
 
 
-from Model.databaseModel import save_result,save_search
+from model.databaseModel import save_result,save_search
 from inference_sdk import InferenceHTTPClient
 
 
-from app.Controller import C_shared
-from app.Model import databaseModel
+from controller import C_shared
+from model import databaseModel
 
 def debug_print(message):
     if C_shared.DEBUG:
-        print("[DEBUG]"+message)
+        print("[DEBUG]"+str(message))
 
 def create_media_folders():
     raw = Path(C_shared.FILEPATH+"raw")
@@ -34,11 +34,13 @@ def setup_api_keys() -> None:
     load_dotenv()
     C_shared.GOOGLE_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
     C_shared.ROBOFLOW_API_KEY = os.getenv("ROBOFLOW_API_KEY")
-    if C_shared.GOOGLE_API_KEY == "":
+
+
+    if C_shared.GOOGLE_API_KEY == None or C_shared.GOOGLE_API_KEY == "":
         raise ValueError("Missing GOOGLE_MAPS_API_KEY in .env or system environment values")
     else:
         debug_print("GOOGLE API key loaded successfully")
-    if C_shared.ROBOFLOW_API_KEY == "":
+    if C_shared.ROBOFLOW_API_KEY == None or C_shared.ROBOFLOW_API_KEY == "":
         raise ValueError("Missing ROBOFLOW_API_KEY in .env or system environment values")
     else:
         debug_print("roboflow key loaded successfully")
