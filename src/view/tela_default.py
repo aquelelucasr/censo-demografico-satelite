@@ -1,10 +1,10 @@
 import tkinter as tk
 import tkintermapview
-from menu_lateral import Menu_lateral
-from paginas import Telas
+from view import menu_lateral
+from view.paginas import Telas
 
 
-if __name__ == "__main__":
+def start_window_loop():
     root = tk.Tk()
     root.title("Mapa")
 

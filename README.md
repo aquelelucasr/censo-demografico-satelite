@@ -35,8 +35,9 @@ Problemas comuns e soluções
 projeto-software/
 ├── README.md
 ├── LICENSE
+├── .env                        # chaves de api
 ├── .gitignore
-├── .venv/                      # bibliotecas *criado pelo script de instalação
+├── .venv/                      # bibliotecas *
 ├── docs/
 │   ├── assets/                 # imagens de referencia
 │   ├── boas-praticas.md        # Organização dos dos commits e branches 
@@ -49,12 +50,14 @@ projeto-software/
 │   ├── view/
 │   └── controller/
 ├── scripts/                    # scripts de instalação
-├── media/                      # imagens salvas pelo programa  *criado em tempo de execução
+├── media/                      # imagens salvas pelo programa  *
 │   ├── raw/
 │   └── controller/
 ├── database/
-│   └──  search_history.sqlite  # *criado em tempo de execução
+│   └──  search_history.sqlite  # *
 └── examples/
+
+* criado pelo script de instalação ou em tempo de execução
 ```
 
 # TODO: refactor code to new standard

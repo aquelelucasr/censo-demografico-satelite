@@ -3,9 +3,9 @@ GUI built with tkinter, able to request dynamic data from the controller for rea
 
 ## TODOS:
  
-- [ ] main view ← program start
+- [X] main view ← program start
 - displays a map and allows the user to write down coordinates or select two points on the map that form a square
-- [ ] text boxes for manual latitude and longitude selection
+- [X] text boxes for manual latitude and longitude selection
 - [ ] submit button that calls the controller and creates a new request in the database
 - [ ] **_OPTIONAL_** make the user able to select points through the map, updating the input boxes
 - [ ] **_OPTIONAL_** move and display a pin on the map when the user types a new coordinate in manually

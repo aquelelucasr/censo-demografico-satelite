@@ -3,3 +3,4 @@ inference-sdk
 requests
 opencv-python
 numpy
+tkintermapview
