@@ -3,6 +3,7 @@ import tkintermapview
 from controller.Functions import debug_print, get_map_image
 from pathlib import Path
 from PIL import Image, ImageTk
+from model.databaseModel import get_search_by_term,get_all_history,get_result_by_id
 
 
 class DetailView(tk.Toplevel):
@@ -23,7 +24,8 @@ class DetailView(tk.Toplevel):
         self.frame_text = tk.Frame(self.frame_lateral, bg="#ADD8E6")
         self.frame_text.pack(expand=True)
         #todo GET DATA FROM THE DATABASE!
-
+        search_data = get_search_by_term(slug)
+        debug_print(search_data)
 
         # -------------------------------------------------
         tk.Label(self.frame_text, text=f"Latitude 1:", bg="#ADD8E6", font=("Arial", 9, "bold")).pack(pady=(0, 2))
@@ -144,8 +146,8 @@ class MainMapWindow(tk.Tk):
         debug_print("main window ready")
 
     def search_selection(self):
-        debug_print("attempting to make new request") #todo: remove
-        DetailView(parent=self, slug="-28.9499992 -49.4664249 18 1782445693")
+        debug_print("attempting to make new request")
+        DetailView(parent=self, slug="-28.949159083073894 -49.46303477113079 18 1782570457")#todo: remove
         return
         if hasattr(self, 'poligono_selecao') and self.poligono_selecao:
             debug_print("has selection")
