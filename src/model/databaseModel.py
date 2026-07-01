@@ -76,9 +76,9 @@ def get_search_by_term(term: str) -> list:
     """Busca no banco todas as slugs que contêm o termo digitado."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    
+
     cursor.execute(
-        "SELECT slug FROM search_history WHERE slug LIKE ?",
+        "SELECT id,slug FROM search_history WHERE slug LIKE ?",
         (f"%{term}%",)
     )
     
