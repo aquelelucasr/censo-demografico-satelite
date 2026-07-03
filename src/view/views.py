@@ -347,13 +347,14 @@ class Relatorio(tk.Toplevel):
 
     def lista_frame2(self):
         self.listaCli = ttk.Treeview(self.frame_2, height=3,
-                                     column=("col1", "col2", "col3", "col4","col5"))
-        self.listaCli.heading("#0", text="")
-        self.listaCli.heading("#1", text="Longitude")
-        self.listaCli.heading("#2", text="Latitude")
-        self.listaCli.heading("#3", text="Longitude")
-        self.listaCli.heading("#4", text="Latitude")
-        self.listaCli.column("#0", width=1)
+                                     column=("col1", "col2", "col3", "col4","col5"),show="headings")
+
+        self.listaCli.heading("#1", text="Slug")
+        self.listaCli.heading("#2", text="Latitude1")
+        self.listaCli.heading("#3", text="Longitude1")
+        self.listaCli.heading("#4", text="Latitude2")
+        self.listaCli.heading("#5", text="Longitude2")
+
         self.listaCli.column("#1", width=100)
         self.listaCli.column("#2", width=100)
         self.listaCli.column("#3", width=100)
@@ -361,7 +362,7 @@ class Relatorio(tk.Toplevel):
         self.listaCli.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
         self.scroolLista = Scrollbar(self.frame_2, orient="vertical")
-        self.listaCli.configure(yscroll=self.scroolLista.set)
+        # self.listaCli.configure(yscroll=self.scroolLista.set)
         self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.01, relheight=0.85)
 
         self.listaCli.bind("<Double-1>", self.click_list)
@@ -371,7 +372,6 @@ class Relatorio(tk.Toplevel):
         for linha_antiga in self.listaCli.get_children():
             self.listaCli.delete(linha_antiga)
 
-       
         for registro in dados:
             self.listaCli.insert("", "end", values=registro)
 
@@ -385,16 +385,8 @@ class Relatorio(tk.Toplevel):
 
         valores_da_linha = self.listaCli.item(selecionado[0], "values")
 
-        lat1 = valores_da_linha[1]
-        lon1 = valores_da_linha[2]
-        lat2 = valores_da_linha[3]
-        lon2 =valores_da_linha[4]
 
-        print(f"O sistema vai processar o cliente {lat1} de código {lon1}!")
-
-        slug = get_map_image(lat1,lon1,lat2,lon2)
-
-        DetailView(parent=self, slug=slug)
+        DetailView(parent=self, slug=valores_da_linha[0])
 
        
 if __name__ == "__main__":

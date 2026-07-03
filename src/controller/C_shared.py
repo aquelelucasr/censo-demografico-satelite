@@ -10,7 +10,7 @@ def debug_print(message):
     if DEBUG:
         print("[DEBUG]"+str(message))
 
-def get_center(lat_tl,lon_tl,lat_br,lon_br) -> tuple[int,int]:
-    center_lat = (lat_tl + lat_br) / 2
-    center_lon = (lon_tl + lon_br) / 2
+def get_center(lat_tl,lon_tl,lat_br,lon_br) -> tuple[float,float]:
+    center_lat = (float(lat_tl) + float(lat_br)) / 2
+    center_lon = (float(lon_tl) + float(lon_br)) / 2
     return center_lat,center_lon
